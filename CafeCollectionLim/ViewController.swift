@@ -3,8 +3,21 @@ import CryptoKit
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // Data model: These strings will be the data for the table view cells
-    var items: [String] = ["Horse - $5", "Cow - $20", "Camel - $40", "Sheep - $2", "Goat - $5"]
-    var prices: [Int] = [5,20,40,2,5]
+    var itemss: [String] = ["Horse - $5", "Cow - $20", "Camel - $40", "Sheep - $2", "Goat - $5"]
+    
+    struct Item {
+        let name: String
+        let price: Int
+    }
+    
+    var items = [
+        Item(name: "Horse - $5", price: 5),
+        Item(name: "Cow - $20", price: 20),
+        Item(name: "Camel - $40", price: 40),
+        Item(name: "Sheep - $2", price: 2),
+        Item(name: "Goat - $5", price: 5),
+    ]
+    
     var total = 0
     var text = ""
     var isAdmin = false
@@ -49,7 +62,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let cell:UITableViewCell = self.tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier)! as UITableViewCell
         
         // set the text from the data model
-        cell.textLabel?.text = self.items[indexPath.row]
+        cell.textLabel?.text = self.items[indexPath.row].name
         
         return cell
     }
@@ -57,9 +70,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     // method to run when table view cell is tapped
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("You tapped cell number \(indexPath.row).")
-        text.append(items[indexPath.row] + "\n")
+        text.append(items[indexPath.row].name + "\n")
         textOut.text = text
-        total+=prices[indexPath.row]
+        total+=items[indexPath.row].price
         priceOut.text = "$\(total)"
         
     }
@@ -80,8 +93,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func addRow(name: String, price: Int){
-        items.append(name)
-        prices.append(price)
+        items.append(Item(name: name,price: price))
         tableView.beginUpdates()
         tableView.insertRows(at: [IndexPath(row: items.count-1, section: 0)], with: .automatic)
         tableView.endUpdates()
@@ -103,11 +115,23 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @IBAction func adminAddItem(_ sender: Any) {
         if let itemPrice = Int(adminItemPrice.text!) {
-            addRow(name: "\(adminItemName.text!) - \(itemPrice)", price: itemPrice)
+            addRow(name: "\(adminItemName.text!) - $\(itemPrice)", price: itemPrice)
         }
     }
     
-    @IBOutlet weak var sortByName: UICommand!
+    @IBOutlet weak var sortButtonsOutlet: UISegmentedControl!
     
-    @IBOutlet weak var sortByPrice: UICommand!
+    @IBAction func sortButtonsChanged(_ sender: Any) {
+        if sortButtonsOutlet.selectedSegmentIndex == 0 {
+            items.sort{ $0.name.lowercased() < $1.name.lowercased() }
+            print(items)
+            tableView.reloadData()
+        } else{
+            items.sort{ $0.price < $1.price }
+            print(items)
+            tableView.reloadData()
+        }
+    }
+    
+    
 }
