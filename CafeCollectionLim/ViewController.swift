@@ -7,12 +7,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var prices: [Int] = [5,20,40,2,5]
     var total = 0
     var text = ""
+    var isAdmin = false
     
     // cell reuse id (cells that scroll out of view can be reused)
     let cellReuseIdentifier = "cell"
     
     // don't forget to hook this up from the storyboard
     @IBOutlet var tableView: UITableView!
+    
+    @IBOutlet weak var adminItemPrice: UITextField!
+    @IBOutlet weak var adminItem: UILabel!
+    @IBOutlet weak var adminItemName: UITextField!
+    @IBOutlet weak var adminAddItemButton: UIButton!
     
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var priceOut: UILabel!
@@ -60,7 +66,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 
-        if editingStyle == .delete && true{
+        if editingStyle == .delete && isAdmin{
 
             // remove the item from the data model
             items.remove(at: indexPath.row)
@@ -83,9 +89,25 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @IBAction func loginButton(_ sender: Any) {
         let hashedPassword = SHA512.hash(data: Data(passwordField.text!.utf8))
+        let hashString = hashedPassword.compactMap { String(format: "%02x", $0) }.joined()
         
-
-        print(hashedPassword)
+        if hashString == "e6c83b282aeb2e022844595721cc00bbda47cb24537c1779f9bb84f04039e1676e6ba8573e588da1052510e3aa0a32a9e55879ae22b0c2d62136fc0a3e85f8bb" {
+            isAdmin = true
+            
+            adminItem.isHidden = false
+            adminItemName.isHidden = false
+            adminItemPrice.isHidden = false
+            adminAddItemButton.isHidden = false
+        }
     }
     
+    @IBAction func adminAddItem(_ sender: Any) {
+        if let itemPrice = Int(adminItemPrice.text!) {
+            addRow(name: "\(adminItemName.text!) - \(itemPrice)", price: itemPrice)
+        }
+    }
+    
+    @IBOutlet weak var sortByName: UICommand!
+    
+    @IBOutlet weak var sortByPrice: UICommand!
 }
