@@ -1,14 +1,21 @@
 import UIKit
 import CryptoKit
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UISearchBarDelegate, UISearchDisplayDelegate {
     
     // Data model: These strings will be the data for the table view cells
-    var itemss: [String] = ["Horse - $5", "Cow - $20", "Camel - $40", "Sheep - $2", "Goat - $5"]
     
     struct Item {
         let name: String
         let price: Int
     }
+    
+    var itemsMaster = [
+        Item(name: "Horse - $5", price: 5),
+        Item(name: "Cow - $20", price: 20),
+        Item(name: "Camel - $40", price: 40),
+        Item(name: "Sheep - $2", price: 2),
+        Item(name: "Goat - $5", price: 5),
+    ]
     
     var items = [
         Item(name: "Horse - $5", price: 5),
@@ -36,9 +43,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var priceOut: UILabel!
     @IBOutlet weak var textOut: UITextView!
+    
+    @IBOutlet weak var searchBarVar: UISearchBar!
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        searchBarVar.delegate = self
+
         // Register the table view cell class and its reuse id
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
         
@@ -94,6 +105,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func addRow(name: String, price: Int){
         items.append(Item(name: name,price: price))
+        itemsMaster.append(Item(name: name,price: price))
         tableView.beginUpdates()
         tableView.insertRows(at: [IndexPath(row: items.count-1, section: 0)], with: .automatic)
         tableView.endUpdates()
@@ -133,5 +145,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        items = itemsMaster
+        items.removeAll{ !$0.name.lowercased().starts(with: searchText.lowercased())}
+        tableView.reloadData()
+    }
     
 }

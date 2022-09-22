@@ -151,6 +151,7 @@
                         <outlet property="adminItemPrice" destination="BVc-E0-jTl" id="34P-n8-bVR"/>
                         <outlet property="passwordField" destination="TDO-n8-z94" id="W40-lH-So9"/>
                         <outlet property="priceOut" destination="rhc-2f-6rd" id="4kM-BW-SH7"/>
+                        <outlet property="searchBarVar" destination="VWO-I7-Yqf" id="01x-Aa-QFK"/>
                         <outlet property="sortButtonsOutlet" destination="w9P-og-ud2" id="gRz-0c-Zcc"/>
                         <outlet property="tableView" destination="w9Y-rq-ax1" id="tTM-Gq-fC6"/>
                         <outlet property="textOut" destination="bH4-xX-bKT" id="Lyb-2U-xq5"/>
