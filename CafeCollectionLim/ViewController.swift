@@ -1,29 +1,34 @@
 import UIKit
 import CryptoKit
+import FirebaseCore
+import FirebaseAuth
+import FirebaseDatabase
+
+
+
+var ref: DatabaseReference!
+
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,UISearchBarDelegate, UISearchDisplayDelegate {
     
     // Data model: These strings will be the data for the table view cells
-    
-    struct Item {
-        let name: String
-        let price: Int
+    var ref = Database.database().reference()
+
+    class Item {
+        init(name: String, price: Int) {
+            self.name = name
+            self.price = price
+        }
+        var name: String
+        var price: Int
     }
     
-    var itemsMaster = [
-        Item(name: "Horse - $5", price: 5),
-        Item(name: "Cow - $20", price: 20),
-        Item(name: "Camel - $40", price: 40),
-        Item(name: "Sheep - $2", price: 2),
-        Item(name: "Goat - $5", price: 5),
-    ]
     
-    var items = [
-        Item(name: "Horse - $5", price: 5),
-        Item(name: "Cow - $20", price: 20),
-        Item(name: "Camel - $40", price: 40),
-        Item(name: "Sheep - $2", price: 2),
-        Item(name: "Goat - $5", price: 5),
-    ]
+    
+    var itemsMaster = [Item]()
+    
+    var items = [Item]()
+    
+    var lastLocalItem = Item(name: "DONOTBUY - $0", price: 0)
     
     var total = 0
     var text = ""
@@ -59,6 +64,71 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // This view controller itself will provide the delegate methods and row data for the table view.
         tableView.delegate = self
         tableView.dataSource = self
+        
+        ref.child("items").observe(.childChanged, with: { (snapshot) in
+            if(!(self.lastLocalItem.name == "\(snapshot.key) - $\(snapshot.value ?? 0)")){
+                print(snapshot.key)
+                print(self.lastLocalItem.name)
+                for item in self.itemsMaster {
+                    if item.name.starts(with: "\(snapshot.key) - $") {
+                        print(item.name)
+                        item.name = "\(snapshot.key) - $\(snapshot.value ?? 0)"
+                        item.price = snapshot.value as! Int
+                        
+                        self.tableView.reloadData()
+                        break;
+                    }
+                }
+                
+                for item in self.items {
+                    if item.name.starts(with: "\(snapshot.key) - $") {
+                        item.name = "\(snapshot.key) - $\(snapshot.value ?? 0)"
+                        item.price = snapshot.value as! Int
+                        
+                        self.tableView.reloadData()
+                        break;
+                    }
+                }
+                
+            }
+        })
+        
+        ref.child("items").observe(.childAdded, with: { (snapshot) in
+                   // snapshot is a dictionary with a key and a dictionary as a value
+                    // this gets the dictionary from each snapshot
+                   
+                    // building a Student object from the dictionary
+                    // adding the student object to the Student array
+            let item = Item(name: "\(snapshot.key) - $\(snapshot.value as! Int)", price: snapshot.value as! Int)
+            
+            print(item.name)
+            print(self.lastLocalItem.name)
+            let myString = self.lastLocalItem.name
+            let regex = try! NSRegularExpression(pattern: "\\d*$", options: NSRegularExpression.Options.caseInsensitive)
+            let range = NSMakeRange(0, myString.count)
+            let modString = regex.stringByReplacingMatches(in: myString, options: [], range: range, withTemplate: "")
+            if(!item.name.starts(with: "\(modString)")){
+                self.items.append(item)
+                self.itemsMaster.append(item)
+                self.tableView.reloadData()
+                self.lastLocalItem = item
+            }
+
+        // should only add the student if the student isn’t already in the array
+        // good place to update the tableview also
+                    
+                })
+    }
+    
+    var handle: AuthStateDidChangeListenerHandle!
+    override func viewWillAppear(_ animated: Bool) {
+        handle = Auth.auth().addStateDidChangeListener { auth, user in
+          // ...
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        Auth.auth().removeStateDidChangeListener(handle)
     }
     
     // number of rows in table view
@@ -93,10 +163,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if editingStyle == .delete && isAdmin{
 
             // remove the item from the data model
-            items.remove(at: indexPath.row)
 
             // delete the table view row
+            
+            let myString = items[indexPath.row].name
+            let regex = try! NSRegularExpression(pattern: " - \\$\\d*$", options: NSRegularExpression.Options.caseInsensitive)
+            let range = NSMakeRange(0, myString.count)
+            let modString = regex.stringByReplacingMatches(in: myString, options: [], range: range, withTemplate: "")
+            ref.child("items").child(modString).removeValue()
+           
+            items.remove(at: indexPath.row)
+
             tableView.deleteRows(at: [indexPath], with: .fade)
+
 
         } else if editingStyle == .insert {
             
@@ -104,30 +183,62 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func addRow(name: String, price: Int){
-        items.append(Item(name: name,price: price))
-        itemsMaster.append(Item(name: name,price: price))
-        tableView.beginUpdates()
-        tableView.insertRows(at: [IndexPath(row: items.count-1, section: 0)], with: .automatic)
-        tableView.endUpdates()
+        let newItem = Item(name: name,price: price)
+        let myString = newItem.name
+        let regex = try! NSRegularExpression(pattern: "\\d*$", options: NSRegularExpression.Options.caseInsensitive)
+        let range = NSMakeRange(0, myString.count)
+        let modString = regex.stringByReplacingMatches(in: myString, options: [], range: range, withTemplate: "")
+        
+        print(modString)
+        if(!itemsMaster.contains{ $0.name.starts(with:modString) }){
+            print(newItem.name)
+            items.append(newItem)
+            itemsMaster.append(newItem)
+            tableView.beginUpdates()
+            tableView.insertRows(at: [IndexPath(row: items.count-1, section: 0)], with: .automatic)
+            tableView.endUpdates()
+        } else{
+            for item in self.itemsMaster {
+                if item.name.starts(with:modString) {
+                    item.name = newItem.name
+                    item.price = newItem.price
+                    
+                    self.tableView.reloadData()
+                    break;
+                }
+            }
+            
+            for item in self.items {
+                if item.name.starts(with:modString) {
+                    item.name = newItem.name
+                    item.price = newItem.price
+                    self.tableView.reloadData()
+                    break;
+                }
+            }
+        }
+        
     }
     
     @IBAction func loginButton(_ sender: Any) {
-        let hashedPassword = SHA512.hash(data: Data(passwordField.text!.utf8))
-        let hashString = hashedPassword.compactMap { String(format: "%02x", $0) }.joined()
-        
-        if hashString == "e6c83b282aeb2e022844595721cc00bbda47cb24537c1779f9bb84f04039e1676e6ba8573e588da1052510e3aa0a32a9e55879ae22b0c2d62136fc0a3e85f8bb" {
-            isAdmin = true
-            
-            adminItem.isHidden = false
-            adminItemName.isHidden = false
-            adminItemPrice.isHidden = false
-            adminAddItemButton.isHidden = false
+        Auth.auth().signIn(withEmail: "admin@cafe.test", password: passwordField.text!) { [weak self] authResult, error in
+          guard let strongSelf = self else { return }
+            self!.isAdmin = true
+            self!.adminItem.isHidden = false
+            self!.adminItemName.isHidden = false
+            self!.adminItemPrice.isHidden = false
+            self!.adminAddItemButton.isHidden = false
+         print(strongSelf)
         }
+
+        
     }
     
     @IBAction func adminAddItem(_ sender: Any) {
         if let itemPrice = Int(adminItemPrice.text!) {
             addRow(name: "\(adminItemName.text!) - $\(itemPrice)", price: itemPrice)
+            lastLocalItem = Item(name: "\(adminItemName.text!) - $\(itemPrice)", price: itemPrice)
+            self.ref.child("items").child(adminItemName.text!).setValue(itemPrice)
         }
     }
     

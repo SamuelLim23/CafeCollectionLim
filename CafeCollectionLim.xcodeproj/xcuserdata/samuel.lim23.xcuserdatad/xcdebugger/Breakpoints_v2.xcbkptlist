@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "FF84D8A8-ACAE-4BD5-A479-C26D0EA4DDA3"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9941B8E5-F9B8-4183-90DC-EA44E4F0100A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CafeCollectionLim/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
+            landmarkName = "addRow(name:price:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D2997769-217E-4A9C-883B-9A9D27CB97B4"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CafeCollectionLim/ViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "ViewController"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "D2997769-217E-4A9C-883B-9A9D27CB97B4 - eb03c94999033a1f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CafeCollectionLim.ViewController.itemsMaster.getter : Swift.Array&lt;CafeCollectionLim.ViewController.Item&gt;"
+                  moduleName = "CafeCollectionLim"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/samuel.lim23/Documents/CafeCollectionLim/CafeCollectionLim/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "88">
+               </Location>
+               <Location
+                  uuid = "D2997769-217E-4A9C-883B-9A9D27CB97B4 - 6a39b6178fa58e0b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CafeCollectionLim.ViewController.itemsMaster.setter : Swift.Array&lt;CafeCollectionLim.ViewController.Item&gt;"
+                  moduleName = "CafeCollectionLim"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/samuel.lim23/Documents/CafeCollectionLim/CafeCollectionLim/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "112">
+               </Location>
+               <Location
+                  uuid = "D2997769-217E-4A9C-883B-9A9D27CB97B4 - bef730c9c02e551c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CafeCollectionLim.ViewController.itemsMaster.modify : Swift.Array&lt;CafeCollectionLim.ViewController.Item&gt;"
+                  moduleName = "CafeCollectionLim"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/samuel.lim23/Documents/CafeCollectionLim/CafeCollectionLim/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "0">
+               </Location>
+               <Location
+                  uuid = "D2997769-217E-4A9C-883B-9A9D27CB97B4 - d5775a82702e8ad1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CafeCollectionLim.ViewController.itemsMaster.modify : Swift.Array&lt;CafeCollectionLim.ViewController.Item&gt; with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "CafeCollectionLim"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/samuel.lim23/Documents/CafeCollectionLim/CafeCollectionLim/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  uuid = "D2997769-217E-4A9C-883B-9A9D27CB97B4 - c81faa99a670820e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CafeCollectionLim.ViewController.init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__C.NSBundle&gt;) -&gt; CafeCollectionLim.ViewController"
+                  moduleName = "CafeCollectionLim"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/samuel.lim23/Documents/CafeCollectionLim/CafeCollectionLim/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "324">
+               </Location>
+               <Location
+                  uuid = "D2997769-217E-4A9C-883B-9A9D27CB97B4 - a710b9e5e3d4c112"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CafeCollectionLim.ViewController.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;CafeCollectionLim.ViewController&gt;"
+                  moduleName = "CafeCollectionLim"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/samuel.lim23/Documents/CafeCollectionLim/CafeCollectionLim/ViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "27"
+                  endingLineNumber = "27"
+                  offsetFromSymbolStart = "300">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
